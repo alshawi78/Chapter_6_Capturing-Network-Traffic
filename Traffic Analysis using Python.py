@@ -1,5 +1,8 @@
+# Ahmed Alshawi
+# EEGR 760
+# Morgan State University
 # Capturing network traffic 
-# This is a packet based traffic analyzer 
+# This is a packet based traffic analyzer that captures data and disply them using Python 
 
 
 import socket, sys
@@ -22,12 +25,11 @@ except socket.error , msg:
 while True:
 	packet = s.recvfrom(65565)
 	
-	#packet string from tuple to get
+	#packet string from tuple
 	packet = packet[0]
 	
-	#parse ethernet header and get information
+	#parse ethernet header and get information the packet information
 	eth_length = 14
-	
 	eth_header = packet[:eth_length]
 	eth = unpack('!6s6sH' , eth_header)
 	eth_protocol = socket.ntohs(eth[2])
@@ -42,9 +44,7 @@ while True:
 		version_ihl = iph[0]
 		version = version_ihl >> 4
 		ihl = version_ihl & 0xF
-
 		iph_length = ihl * 4
-
 		ttl = iph[5]
 		protocol = iph[6]
 		s_addr = socket.inet_ntoa(iph[8]);
@@ -52,16 +52,14 @@ while True:
 
 		print 'Version : ' + str(version) + ' IP Header Length : ' + str(ihl) + ' TTL : ' + str(ttl) + ' Protocol : ' + str(protocol) + ' Source Address : ' + str(s_addr) + ' Destination Address : ' + str(d_addr)
 
-#This program is protocol base, Below are the the code for each protocol
+#This program is protocol base, Below are the the code for each protocols the most commonly used in Networking
 
 		#TCP protocol
 		if protocol == 6 :
 			t = iph_length + eth_length
 			tcp_header = packet[t:t+20]
-
-			#now unpack them :)
+			#unpack
 			tcph = unpack('!HHLLBBHHH' , tcp_header)
-			
 			source_port = tcph[0]
 			dest_port = tcph[1]
 			sequence = tcph[2]
