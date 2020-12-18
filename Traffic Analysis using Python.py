@@ -100,7 +100,7 @@ while True:
 			
 			print 'Data : ' + data
 
-		#TCP Packets
+		#IGMP Packets
 		elif protocol ==  :
 			u = iph_length + eth_length
 			tcp_length = 8
